@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>dotSource Website Designing</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="jumbotron jumbotron-fluid text-center mb-0 bg-white">
+        <img th:src="@{/dotsource.png}"/>
+        <h2>Website Designing</h2>
+    </div>
+
+    <!-- https://www.w3schools.com/bootstrap4/bootstrap_navbar.asp -->
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <ul class="navbar-nav mr-auto">
+            <li class="navitem"><a class="nav-link active" th:href="@{/products}">Produkte</a></li>
+            <li class="navitem"><a class="nav-link" th:href="@{/cart}">Warenkorb</a></li>
+        </ul>
+    </div>
+
+    <!-- https://www.w3schools.com/bootstrap4/bootstrap_carousel.asp -->
+    <div class="container mb-4">
+        <div id="demo" class="carousel slide" data-ride="carousel">
+
+            <!-- Indicators -->
+            <ul class="carousel-indicators">
+                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                <li data-target="#demo" data-slide-to="1"></li>
+            </ul>
+
+            <!-- The slideshow -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img th:src="@{/slide1.jpg}" width="100%" alt="slide">
+                </div>
+                <div class="carousel-item">
+                    <img th:src="@{/slide2.jpg}" width="100%" alt="slide">
+                </div>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
+
+    <!-- https://www.w3schools.com/bootstrap4/bootstrap_grid_basic.asp -->
+    <div class="container">
+        <div class="row">
+
+            <!-- für jedes in der Produktliste befindliche Produkt wird eine neue product card erzeugt -->
+            <!-- product card -->
+            <div th:each="product: ${productList}" class="col-md-4 mb-4">
+                <!-- https://www.w3schools.com/bootstrap4/bootstrap_cards.asp -->
+                <div class="card">
+                    <a th:text="${product.name}" th:href="@{/products/id/{id}(id=${product.id})}" class="card-header bg-primary text-white"></a>
+                    <img width="100%" class="card-image-top" th:src="@{/{photo}(photo=${product.photo})}" alt="thumbnail"/>
+                    <div class="card-body">
+                        <p>Preis: <span th:text="${product.price}"></span> €</p>
+                        <hr />
+                        <form method="post" th:action="@{/cart/add}">
+                            <input type="hidden" th:value="${product.id}" name="id"/>
+                            <button type="submit" class="btn btn-success">zum Warenkorb hinzufügen</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

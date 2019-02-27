@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>dotSource Website Designing</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="jumbotron jumbotron-fluid text-center mb-0 bg-white">
+        <img th:src="@{/dotsource.png}"/>
+        <h2>Website Designing</h2>
+    </div>
+
+    <!-- https://www.w3schools.com/bootstrap4/bootstrap_navbar.asp -->
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <ul class="navbar-nav mr-auto">
+            <li class="navitem"><a class="nav-link" th:href="@{/products}">Produkte</a></li>
+            <li class="navitem"><a class="nav-link active" th:href="@{/cart}">Warenkorb</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+
+        <h1>Warenkorb</h1>
+
+        <!-- ist der Warenkorb leer wird die Tabelle nicht erzeugt -->
+        <table th:if="${not #lists.isEmpty(cart.itemList)}" class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col"> </th>
+                    <th scope="col">Produktname</th>
+                    <th scope="col">Preis</th>
+                    <th scope="col">Stückzahl</th>
+                    <th scope="col">Gesamtpreis</th>
+                    <th scope="col">
+                        <form class="form-inline my-2 my-lg-0" method="post" th:action="@{/cart/removeAll}">
+                            <button type="submit" class="btn btn-sm btn-danger">alle entfenen</button>
+                        </form>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- für jedes im Warenkorb befindliche Produkt wird eine neue Zeile eingefügt -->
+                <tr th:each="item: ${cart.itemList}">
+                    <th scope="row"></th>
+                    <td>
+                        <img style="max-width:50px;" th:src="@{/{photo}(photo=${item.product.photo})}" alt="image"/>
+                    </td>
+                    <td>
+                        <p th:text="${item.product.name}"></p>
+                    </td>
+                    <td>
+                        <p><span th:text="${item.product.price}"></span> €</p>
+                    </td>
+                    <td>
+                        <p th:text="${item.quantity}"></p>
+                    </td>
+                    <td>
+                        <p><span th:text="${item.product.price} * ${item.quantity}"></span> €</p>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{/cart/remove}">
+                            <input type="hidden" th:value="${item.product.id}" name="id"/>
+                            <button type="submit" class="btn btn-sm btn-dark">entfernen</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+
+        <div class="navbar navbar-expand-lg">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="btn btn-primary" th:href="@{/products}">weiter einkaufen</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" th:if="${not #lists.isEmpty(cart.itemList)}">
+                <button class="btn btn-success">jetzt kaufen</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>
